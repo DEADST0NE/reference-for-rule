@@ -1,0 +1,23 @@
+{
+  "name": "reference-for-rule",
+  "version": "1.0.0",
+  "main": "main.ts",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "start": "ts-node src/index.ts"
+  },
+  "dependencies": {
+    "axios": "^1.7.1",
+    "eth-crypto": "^2.6.0",
+    "ethers": "^6.12.1",
+    "inquirer": "^8.2.6"
+  },
+  "devDependencies": {
+    "@types/inquirer": "^9.0.7",
+    "@types/node": "^20.12.12",
+    "esm": "^3.2.25",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  }
+}
