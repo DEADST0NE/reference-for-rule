@@ -1,7 +1,8 @@
 import { sendRule } from "./utils/api";
 import { getData, getPurefiType } from "./utils/helpers";
+import { validBabyJubJub, validEcdsa } from "./utils/validations";
+
 import { SignTypeEnum } from "./utils/types";
-import { validEcdsa } from "./utils/validations";
 
 async function main() {
   const answers = await getData();
@@ -28,6 +29,14 @@ async function main() {
       packageType,
       purefiData,
       setSigner: answers.setSigner,
+      env: answers.env,
+    });
+  } else {
+    validBabyJubJub({
+      packageType,
+      purefiData,
+      setSigner: answers.setSigner,
+      env: answers.env,
     });
   }
 }

@@ -31,7 +31,10 @@ export const sendRule = async (payload: SendRule) => {
     return res.data;
   } catch (err: any) {
     throw new Error(
-      err?.response?.message || err.message || err.data || "ISSUER QUERY ERROR"
+      err?.response?.data?.message ||
+        err.message ||
+        err.data ||
+        "ISSUER QUERY ERROR"
     );
   }
 };

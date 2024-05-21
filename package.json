@@ -9,11 +9,13 @@
   },
   "dependencies": {
     "axios": "^1.7.1",
+    "circomlibjs": "^0.1.7",
     "eth-crypto": "^2.6.0",
     "ethers": "^6.12.1",
     "inquirer": "^8.2.6"
   },
   "devDependencies": {
+    "@types/circomlibjs": "^0.1.6",
     "@types/inquirer": "^9.0.7",
     "@types/node": "^20.12.12",
     "esm": "^3.2.25",

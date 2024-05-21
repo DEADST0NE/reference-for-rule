@@ -88,3 +88,20 @@ export const getPurefiType = (rule: number) => {
   }
   return 1;
 };
+
+const bufferToBigInt = (buf: Buffer) => {
+  const hex = buf.toString("hex");
+  if (hex.length === 0) {
+    return BigInt(0);
+  }
+  return BigInt(`0x${hex}`);
+};
+
+const uint8ArrayToBigInt = (uint8Array: Uint8Array) =>
+  bufferToBigInt(Buffer.from(uint8Array));
+
+export const extractBigInt = (
+  message: Uint8Array,
+  start: number,
+  offset = 32
+) => uint8ArrayToBigInt(new Uint8Array(message.slice(start, start + offset)));

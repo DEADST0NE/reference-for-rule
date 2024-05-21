@@ -40,4 +40,12 @@ export type ValidEcdsa = {
   purefiData: string;
   packageType: number;
   setSigner: boolean;
+  env: EnvEnum;
+};
+
+export type PublicKeys = {
+  [key in EnvEnum]: {
+    hex: string;
+    point: [Uint8Array, Uint8Array];
+  };
 };
