@@ -13,10 +13,13 @@ async function main() {
       receiver: answers.receiver,
       chainId: `${answers.chainId}`,
       ruleId: `${answers.rule}`,
+      amount: answers.amount,
+      token: answers.token,
     },
     privateKey: answers.privateKey,
     setSigner: answers.setSigner,
     env: answers.env,
+    sign: answers.sign,
     signType: answers.signType,
   });
 
@@ -24,7 +27,7 @@ async function main() {
 
   const packageType = getPurefiType(answers.rule);
 
-  if (answers.signType === SignTypeEnum.ecdsa) {
+  if (answers.sign === SignTypeEnum.ecdsa) {
     validEcdsa({
       packageType,
       purefiData,

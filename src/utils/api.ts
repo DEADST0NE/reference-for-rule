@@ -24,7 +24,7 @@ export const sendRule = async (payload: SendRule) => {
     const res = await instance.post<string>("/v4/rule", {
       message,
       signature,
-      signType: payload.signType,
+      signType: payload.sign,
       setSigner: payload.setSigner,
     });
 

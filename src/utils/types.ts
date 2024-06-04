@@ -1,5 +1,8 @@
+import BigNumber from "bignumber.js";
+
 export type Answers = {
-  signType: SignTypeEnum;
+  sign: SignTypeEnum;
+  signType: 1 | 2;
   setSigner: boolean;
   privateKey: string;
   sender: string;
@@ -7,6 +10,8 @@ export type Answers = {
   chainId: number;
   rule: number;
   env: EnvEnum;
+  token?: string;
+  amount?: string;
 };
 
 export enum EnvEnum {
@@ -33,7 +38,8 @@ export type SendRule = {
   data: RuleData;
   privateKey: string;
   setSigner: boolean;
-  signType: SignTypeEnum;
+  sign: SignTypeEnum;
+  signType: 1 | 2;
 };
 
 export type ValidEcdsa = {
@@ -49,3 +55,19 @@ export type PublicKeys = {
     point: [Uint8Array, Uint8Array];
   };
 };
+
+export const RulesType1 = [
+  "777",
+  "776",
+  "731",
+  "131",
+  "231",
+  "331",
+  "81",
+  "82",
+  "83",
+  "91",
+  "92",
+  "93",
+];
+export const RulesType2 = ["631", "94", "95", "96"];
