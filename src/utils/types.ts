@@ -1,6 +1,7 @@
 import BigNumber from "bignumber.js";
 
 export type Answers = {
+  method: MethodEnum;
   sign: SignTypeEnum;
   signType: 1 | 2;
   setSigner: boolean;
@@ -24,6 +25,11 @@ export enum SignTypeEnum {
   "babyJubJub" = "babyJubJub",
 }
 
+export enum MethodEnum {
+  RULE = "RULE",
+  LIMIT = "LIMIT",
+}
+
 export type RuleData = {
   sender: string;
   amount?: string;
@@ -40,6 +46,17 @@ export type SendRule = {
   setSigner: boolean;
   sign: SignTypeEnum;
   signType: 1 | 2;
+};
+
+export type SendRuleLimit = {
+  data: {
+    sender: string;
+    ruleId: string;
+    chainId: string;
+    receiver: string;
+  };
+  env: EnvEnum;
+  privateKey: string;
 };
 
 export type ValidEcdsa = {
@@ -71,3 +88,5 @@ export const RulesType1 = [
   "93",
 ];
 export const RulesType2 = ["631", "94", "95", "96"];
+
+export const Chains = [1, 56, 137, 80002, 97, 11155111, 10243, 11155420];

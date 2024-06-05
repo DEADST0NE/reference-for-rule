@@ -1,11 +1,27 @@
-import { sendRule } from "./utils/api";
+import { sendRule, sendRuleLimit } from "./utils/api";
 import { getData, getPurefiType } from "./utils/helpers";
 import { validBabyJubJub, validEcdsa } from "./utils/validations";
 
-import { SignTypeEnum } from "./utils/types";
+import { MethodEnum, SignTypeEnum } from "./utils/types";
 
 async function main() {
   const answers = await getData();
+
+  if (answers.method === MethodEnum.LIMIT) {
+    const limits = await sendRuleLimit({
+      data: {
+        sender: answers.sender,
+        receiver: answers.receiver,
+        chainId: `${answers.chainId}`,
+        ruleId: `${answers.rule}`,
+      },
+      privateKey: answers.privateKey,
+      env: answers.env,
+    });
+
+    console.log("\n", "Result LIMIT:\n", limits);
+    return;
+  }
 
   const purefiData = await sendRule({
     data: {
@@ -23,7 +39,7 @@ async function main() {
     signType: answers.signType,
   });
 
-  console.log("\n", "Result:\n", purefiData);
+  console.log("\n", "Result RULE:\n", purefiData);
 
   const packageType = getPurefiType(answers.rule);
 
