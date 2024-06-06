@@ -78,7 +78,7 @@ export const getData = async () => {
   }
   // RULE
   else {
-    data = await inquirer.prompt<Answers>([
+    const ruleData = await inquirer.prompt<Answers>([
       {
         type: "list",
         name: "sign",
@@ -117,6 +117,7 @@ export const getData = async () => {
         },
       },
     ]);
+    data = { ...data, ...ruleData };
 
     if (data.signType === 1) {
       const answers = await inquirer.prompt<Answers>([
