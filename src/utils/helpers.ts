@@ -205,9 +205,11 @@ export const getData = async () => {
         },
       ]);
 
-      const amount = (
-        data.amount ? BigNumber(data.amount) : BigNumber(0)
-      ).toString(16);
+      const amount =
+        "0x" +
+        (answers.amount ? BigNumber(answers.amount) : BigNumber(0)).toString(
+          16
+        );
 
       data = { ...data, ...answers, amount };
     }

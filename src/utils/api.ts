@@ -10,10 +10,10 @@ const getUrl = (env: EnvEnum) =>
     : "https://stage.issuer.app.purefi.io";
 
 export const sendRule = async (payload: SendRule) => {
-  const signer = new Wallet(payload.privateKey, ETH_PROVIDER);
-
   const message = JSON.stringify(payload.data);
   const baseURL = getUrl(payload.env);
+
+  const signer = new Wallet(payload.privateKey, ETH_PROVIDER);
   const signature = await signer.signMessage(message);
 
   const instance = axios.create({
