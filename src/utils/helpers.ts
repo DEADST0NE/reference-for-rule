@@ -43,19 +43,9 @@ export const getData = async () => {
       },
       {
         type: "input",
-        name: "sender",
+        name: "contract",
         default: "0x979379a368aF8eE40f6eF47E08aA2f976da1c9eD",
-        message: `Input sender ${setColor("33", "public key")}:`,
-        validate: (value: string) => {
-          const valid = value.length === 42;
-          return valid || `Please enter length 42 char`;
-        },
-      },
-      {
-        type: "input",
-        name: "receiver",
-        default: "0xaa8F4C9a834f4329e2Bb96DcFb96e2F0FEE42235",
-        message: `Input receiver ${setColor("33", "public key")}:`,
+        message: `Input contract address ${setColor("33", "public key")}:`,
         validate: (value: string) => {
           const valid = value.length === 42;
           return valid || `Please enter length 42 char`;

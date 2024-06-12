@@ -10,10 +10,9 @@ async function main() {
   if (answers.method === MethodEnum.LIMIT) {
     const limits = await sendRuleLimit({
       data: {
-        sender: answers.sender,
-        receiver: answers.receiver,
-        chainId: `${answers.chainId}`,
         ruleId: `${answers.rule}`,
+        chainId: `${answers.chainId}`,
+        contract: answers.contract,
       },
       privateKey: answers.privateKey,
       env: answers.env,

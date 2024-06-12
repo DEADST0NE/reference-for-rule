@@ -13,6 +13,7 @@ export type Answers = {
   env: EnvEnum;
   token?: string;
   amount?: string;
+  contract: string;
 };
 
 export enum EnvEnum {
@@ -50,10 +51,9 @@ export type SendRule = {
 
 export type SendRuleLimit = {
   data: {
-    sender: string;
     ruleId: string;
     chainId: string;
-    receiver: string;
+    contract: string;
   };
   env: EnvEnum;
   privateKey: string;

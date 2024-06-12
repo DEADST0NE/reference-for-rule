@@ -13,12 +13,14 @@
     "circomlibjs": "^0.1.7",
     "eth-crypto": "^2.6.0",
     "ethers": "^6.12.1",
-    "inquirer": "^8.2.6"
+    "inquirer": "^8.2.6",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@types/circomlibjs": "^0.1.6",
     "@types/inquirer": "^9.0.7",
     "@types/node": "^20.12.12",
+    "@types/uuid": "^9.0.8",
     "esm": "^3.2.25",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"

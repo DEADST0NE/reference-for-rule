@@ -3,6 +3,7 @@ import axios from "axios";
 
 import { ETH_PROVIDER } from "./providers";
 import { SendRule, EnvEnum, SendRuleLimit } from "./types";
+import { v4 } from "uuid";
 
 const getUrl = (env: EnvEnum) =>
   env === EnvEnum.PROD
@@ -10,7 +11,18 @@ const getUrl = (env: EnvEnum) =>
     : "https://stage.issuer.app.purefi.io";
 
 export const sendRule = async (payload: SendRule) => {
-  const message = JSON.stringify(payload.data);
+  const nonce = v4();
+  const deadline = new Date();
+  deadline.setMinutes(deadline.getMinutes() + 3);
+
+  const data: SendRule["data"] & { deadline: number; nonce: string } = {
+    nonce,
+    ...payload.data,
+    deadline: +deadline,
+  };
+
+  const message = JSON.stringify(data);
+
   const baseURL = getUrl(payload.env);
 
   const signer = new Wallet(payload.privateKey, ETH_PROVIDER);
@@ -39,11 +51,19 @@ export const sendRule = async (payload: SendRule) => {
   }
 };
 
-export const sendRuleLimit = async (payload: SendRuleLimit) => {
-  const signer = new Wallet(payload.privateKey, ETH_PROVIDER);
+export const sendRuleLimit = async (params: SendRuleLimit) => {
+  const signer = new Wallet(params.privateKey, ETH_PROVIDER);
 
-  const message = JSON.stringify(payload.data);
-  const baseURL = getUrl(payload.env);
+  const deadline = new Date();
+  deadline.setMinutes(deadline.getMinutes() + 3);
+
+  const payload: SendRuleLimit["data"] & { deadline: number } = {
+    ...params.data,
+    deadline: +deadline,
+  };
+
+  const message = JSON.stringify(payload);
+  const baseURL = getUrl(params.env);
   const signature = await signer.signMessage(message);
 
   const instance = axios.create({
