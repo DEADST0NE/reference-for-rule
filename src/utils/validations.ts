@@ -134,6 +134,8 @@ export const validBabyJubJub = async (payload: ValidEcdsa) => {
     _receiver: bigint,
     _token: bigint,
     _amount: bigint,
+    _chargedZkp: bigint,
+    _nonce: bigint,
     _signer: bigint;
 
   let messageHash: Uint8Array;
@@ -145,26 +147,22 @@ export const validBabyJubJub = async (payload: ValidEcdsa) => {
     _sessionIdHex = extractBigInt(message, 72, 31); // start: 72, offset: 32 bytes
     _sender = extractBigInt(message, 116, 20); // start: 104, offset: 20 bytes (address)
     _receiver = extractBigInt(message, 148, 20); // start: 136, offset: 20 bytes (address)
-    _signer = extractBigInt(message, 180, 20); // start: 168, offset: 20 bytes (address)
 
-    messageHash = payload.setSigner
-      ? eddsa.poseidon([
-          _pkgType,
-          _timestamp,
-          _sender,
-          _receiver,
-          _sessionIdHex,
-          _ruleId,
-          _signer,
-        ])
-      : eddsa.poseidon([
-          _pkgType,
-          _timestamp,
-          _sender,
-          _receiver,
-          _sessionIdHex,
-          _ruleId,
-        ]);
+    _signer = extractBigInt(message, 180, 20);
+    _chargedZkp = extractBigInt(message, 200, 32);
+    _nonce = extractBigInt(message, 232, 32);
+
+    const nestedHash = eddsa.poseidon([_signer, _chargedZkp, _nonce]);
+
+    messageHash = eddsa.poseidon([
+      _pkgType,
+      _timestamp,
+      _sender,
+      _receiver,
+      _sessionIdHex,
+      _ruleId,
+      nestedHash,
+    ]);
   } else {
     _timestamp = extractBigInt(message, 0, 8); // start: 0, offset: 8 bytes
     _pkgType = extractBigInt(message, 39, 1); // start: 8, offset: 1 byte
@@ -174,31 +172,39 @@ export const validBabyJubJub = async (payload: ValidEcdsa) => {
     _receiver = extractBigInt(message, 148, 20); // start: 136, offset: 20 bytes (address)
     _token = extractBigInt(message, 180, 20); // start: 168, offset: 20 bytes (address)
     _amount = extractBigInt(message, 200, 32); // start: 200, offset: 32 bytes
-    _signer = extractBigInt(message, 244, 20); // start: 232, offset: 20 bytes (address)
 
-    messageHash = payload.setSigner
-      ? eddsa.poseidon([
-          _pkgType,
-          _timestamp,
-          _sender,
-          _receiver,
-          _token,
-          _sessionIdHex,
-          _ruleId,
-          _amount,
-          _signer,
-        ])
-      : eddsa.poseidon([
-          _pkgType,
-          _timestamp,
-          _sender,
-          _receiver,
-          _token,
-          _sessionIdHex,
-          _ruleId,
-          _amount,
-        ]);
+    _signer = extractBigInt(message, 232, 20); // start: 232, offset: 20 bytes (address)
+    _chargedZkp = extractBigInt(message, 252, 32); // start: 252, offset: 32 bytes
+    _nonce = extractBigInt(message, 284, 32); // start: 284, offset: 32 bytes
+
+    const nestedHash = eddsa.poseidon([_signer, _chargedZkp, _nonce]);
+
+    messageHash = eddsa.poseidon([
+      _pkgType,
+      _timestamp,
+      _sender,
+      _receiver,
+      _token,
+      _sessionIdHex,
+      _ruleId,
+      _amount,
+      nestedHash,
+    ]);
   }
+
+  console.log("Extracted data:", {
+    _timestamp,
+    _pkgType,
+    _ruleId,
+    _sessionIdHex,
+    _sender,
+    _receiver,
+    _token: _token!,
+    _amount: _amount!,
+    _signer,
+    _chargedZkp,
+    _nonce,
+  });
 
   const pSignature = getBytes(signature);
 
