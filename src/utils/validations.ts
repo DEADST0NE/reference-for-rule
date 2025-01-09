@@ -1,9 +1,4 @@
-import {
-  AbiCoder,
-  getBytes,
-  solidityPacked,
-  solidityPackedKeccak256,
-} from "ethers";
+import { AbiCoder, getBytes, toBeHex, solidityPackedKeccak256 } from "ethers";
 import { recover } from "eth-crypto";
 import { buildEddsa } from "circomlibjs";
 
@@ -153,7 +148,7 @@ export const validBabyJubJub = async (payload: ValidEcdsa) => {
       _timestamp,
       _sender,
       _receiver,
-      _sessionIdHex,
+      toBeHex(_sessionIdHex).slice(0, 64),
       _ruleId,
       _nestedHash,
     ]);
@@ -187,7 +182,7 @@ export const validBabyJubJub = async (payload: ValidEcdsa) => {
       _sender,
       _receiver,
       _token,
-      _sessionIdHex,
+      toBeHex(_sessionIdHex).slice(0, 64),
       _ruleId,
       _amount,
       _nestedHash,
