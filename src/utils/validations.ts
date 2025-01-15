@@ -119,8 +119,6 @@ export const validBabyJubJub = async (payload: ValidEcdsa) => {
 
   const _timestamp: any = timestamp;
   let _pkgType: number;
-  let _ruleId: any;
-  let _sessionIdHex: any;
   let _sender: string;
   let _receiver: string;
   let _token: string;
@@ -130,47 +128,11 @@ export const validBabyJubJub = async (payload: ValidEcdsa) => {
   let messageHash: Uint8Array;
 
   if (payload.packageType === 1) {
-    [_pkgType, _ruleId, _sessionIdHex, _sender, _receiver, _nestedHash] =
-      abiCoder.decode(
-        [
-          "uint8", // packageType - number
-          "uint256", // ruleId - BigNumber
-          "uint256", // sessionId - BigNumber
-          "address", // sender - string
-          "address", // receiver - string
-          "bytes", // nestedHash - string
-        ],
-        purefiPackage
-      );
-
-    messageHash = eddsa.poseidon([
-      _pkgType,
-      _timestamp,
-      _sender,
-      _receiver,
-      toBeHex(_sessionIdHex).slice(0, 64),
-      _ruleId,
-      _nestedHash,
-    ]);
-  } else {
-    [
-      _pkgType,
-      _ruleId,
-      _sessionIdHex,
-      _sender,
-      _receiver,
-      _token,
-      _amount,
-      _nestedHash,
-    ] = abiCoder.decode(
+    [_pkgType, _sender, _receiver, _nestedHash] = abiCoder.decode(
       [
         "uint8", // packageType - number
-        "uint256", // ruleId - BigNumber
-        "uint256", // sessionId - BigNumber
         "address", // sender - string
         "address", // receiver - string
-        "address", // token - string
-        "uint256", // amount - BigNumber
         "bytes", // nestedHash - string
       ],
       purefiPackage
@@ -181,9 +143,28 @@ export const validBabyJubJub = async (payload: ValidEcdsa) => {
       _timestamp,
       _sender,
       _receiver,
+      _nestedHash,
+    ]);
+  } else {
+    [_pkgType, _sender, _receiver, _token, _amount, _nestedHash] =
+      abiCoder.decode(
+        [
+          "uint8", // packageType - number
+          "address", // sender - string
+          "address", // receiver - string
+          "address", // token - string
+          "uint256", // amount - BigNumber
+          "bytes", // nestedHash - string
+        ],
+        purefiPackage
+      );
+
+    messageHash = eddsa.poseidon([
+      _pkgType,
+      _timestamp,
+      _sender,
+      _receiver,
       _token,
-      toBeHex(_sessionIdHex).slice(0, 64),
-      _ruleId,
       _amount,
       _nestedHash,
     ]);
