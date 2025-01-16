@@ -22,6 +22,7 @@ export enum EnvEnum {
 export enum SignTypeEnum {
   "ecdsa" = "ecdsa",
   "babyJubJub" = "babyJubJub",
+  "babyJubJubPanther" = "babyJubJubPanther",
 }
 
 export enum MethodEnum {

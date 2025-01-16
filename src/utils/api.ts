@@ -7,7 +7,7 @@ import { SendRule, EnvEnum, SendRuleLimit } from "./types";
 const getUrl = (env: EnvEnum) =>
   env === EnvEnum.PROD
     ? "https://issuer.app.purefi.io"
-    : "https://stage.issuer.app.purefi.io";
+    : "http://127.0.0.1:4000";
 
 export const sendRule = async (payload: SendRule) => {
   const nonce = Math.floor(Math.random() * 1000) + 1;

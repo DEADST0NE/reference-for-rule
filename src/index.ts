@@ -1,6 +1,10 @@
 import { sendRule, sendRuleLimit } from "./utils/api";
 import { getData, getPurefiType } from "./utils/helpers";
-import { validBabyJubJub, validEcdsa } from "./utils/validations";
+import {
+  validBabyJubJub,
+  validBabyJubJubPanther,
+  validEcdsa,
+} from "./utils/validations";
 
 import { MethodEnum, SignTypeEnum } from "./utils/types";
 
@@ -44,6 +48,13 @@ async function main() {
 
   if (answers.sign === SignTypeEnum.ecdsa) {
     validEcdsa({
+      packageType,
+      purefiData,
+      setSigner: answers.setSigner,
+      env: answers.env,
+    });
+  } else if (answers.sign === SignTypeEnum.babyJubJubPanther) {
+    validBabyJubJubPanther({
       packageType,
       purefiData,
       setSigner: answers.setSigner,

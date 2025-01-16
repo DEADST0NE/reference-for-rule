@@ -74,7 +74,7 @@ export const getData = async () => {
         name: "sign",
         default: "ecdsa",
         message: "Select sign:",
-        choices: ["ecdsa", "babyJubJub"],
+        choices: ["ecdsa", "babyJubJub", "babyJubJubPanther"],
       },
       {
         type: "list",
