@@ -1,8 +1,8 @@
 import {
   AbiCoder,
   getBytes,
-  solidityPacked,
   solidityPackedKeccak256,
+  solidityPacked,
 } from "ethers";
 import { recover } from "eth-crypto";
 import { buildEddsa } from "circomlibjs";
@@ -112,6 +112,82 @@ export const validEcdsa = (payload: ValidEcdsa) => {
     setColor("31", "VALID STATUS:"),
     publicKey === publicKeys[payload.env].hex
   );
+};
+
+export const validBabyJubJubPanther = async (payload: ValidEcdsa) => {
+  const eddsa = await buildEddsa();
+  const abiCoder = AbiCoder.defaultAbiCoder();
+  const [timestamp, signature, purefiPackage] = abiCoder.decode(
+    ["uint64", "bytes", "bytes"],
+    payload.purefiData
+  );
+
+  const _timestamp: any = timestamp;
+  let _pkgType: number;
+  let _sender: string;
+  let _receiver: string;
+  let _token: string;
+  let _amount: any;
+  let _nestedHash: string;
+
+  let messageHash: Uint8Array;
+
+  if (payload.packageType === 1) {
+    [_pkgType, _sender, _receiver, _nestedHash] = abiCoder.decode(
+      [
+        "uint8", // packageType - number
+        "address", // sender - string
+        "address", // receiver - string
+        "bytes", // nestedHash - string
+      ],
+      purefiPackage
+    );
+
+    messageHash = eddsa.poseidon([
+      _pkgType,
+      _timestamp,
+      _sender,
+      _receiver,
+      _nestedHash,
+    ]);
+  } else {
+    [_pkgType, _sender, _receiver, _token, _amount, _nestedHash] =
+      abiCoder.decode(
+        [
+          "uint8", // packageType - number
+          "address", // sender - string
+          "address", // receiver - string
+          "address", // token - string
+          "uint256", // amount - BigNumber
+          "bytes", // nestedHash - string
+        ],
+        purefiPackage
+      );
+
+    messageHash = eddsa.poseidon([
+      _pkgType,
+      _timestamp,
+      _sender,
+      _receiver,
+      _token,
+      _amount,
+      _nestedHash,
+    ]);
+  }
+
+  const pSignature = getBytes(signature);
+
+  const uSignature = eddsa.unpackSignature(pSignature);
+
+  const issuerPublicKey = publicKeys[payload.env].point;
+
+  const isValid = eddsa.verifyPoseidon(
+    messageHash,
+    uSignature,
+    issuerPublicKey
+  );
+
+  console.log(setColor("31", "VALID STATUS:"), isValid);
 };
 
 export const validBabyJubJub = async (payload: ValidEcdsa) => {

@@ -1,5 +1,3 @@
-import BigNumber from "bignumber.js";
-
 export type Answers = {
   method: MethodEnum;
   sign: SignTypeEnum;
@@ -24,6 +22,7 @@ export enum EnvEnum {
 export enum SignTypeEnum {
   "ecdsa" = "ecdsa",
   "babyJubJub" = "babyJubJub",
+  "babyJubJubPanther" = "babyJubJubPanther",
 }
 
 export enum MethodEnum {
@@ -86,6 +85,7 @@ export const RulesType1 = [
   "91",
   "92",
   "93",
+  "820050",
 ];
 export const RulesType2 = ["631", "94", "95", "96"];
 

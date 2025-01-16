@@ -3,7 +3,6 @@ import axios from "axios";
 
 import { ETH_PROVIDER } from "./providers";
 import { SendRule, EnvEnum, SendRuleLimit } from "./types";
-import { v4 } from "uuid";
 
 const getUrl = (env: EnvEnum) =>
   env === EnvEnum.PROD
@@ -11,15 +10,16 @@ const getUrl = (env: EnvEnum) =>
     : "https://stage.issuer.app.purefi.io";
 
 export const sendRule = async (payload: SendRule) => {
-  const nonce = v4();
+  const nonce = Math.floor(Math.random() * 1000) + 1;
   const deadline = new Date();
   deadline.setMinutes(deadline.getMinutes() + 3);
 
-  const data: SendRule["data"] & { deadline: number; nonce: string } = {
-    nonce,
-    ...payload.data,
-    deadline: +deadline,
-  };
+  const data: SendRule["data"] & { deadline: number; nonce: number | string } =
+    {
+      nonce,
+      ...payload.data,
+      deadline: +deadline,
+    };
 
   const message = JSON.stringify(data);
 
