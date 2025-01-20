@@ -128,19 +128,41 @@ export const validBabyJubJubPanther = async (payload: ValidEcdsa) => {
   let _receiver: string;
   let _token: string;
   let _amount: any;
-  let _nestedHash: string;
+  let _ruleId: number;
+  let _sessionId: number;
+  let _signer: string;
+  let _nonce: number;
+  let _chargedZkp: number;
 
   let messageHash: Uint8Array;
 
   if (payload.packageType === 1) {
-    [_pkgType, _sender, _receiver, _nestedHash] = abiCoder.decode(
+    [
+      _pkgType,
+      _ruleId,
+      _sessionId,
+      _sender,
+      _receiver,
+      _signer,
+      _nonce,
+      _chargedZkp,
+    ] = abiCoder.decode(
       [
         "uint8", // packageType - number
+        "uint256", // ruleId - BigNumber
+        "uint256", // sessionId - BigNumber
         "address", // sender - string
         "address", // receiver - string
-        "bytes", // nestedHash - string
+        "address", // signer - string
+        "uint256", // nonce - BigNumber
+        "uint256", // chargedZkp  - BigNumber
       ],
       purefiPackage
+    );
+
+    const nestedHash = abiCoder.encode(
+      ["address", "uint256", "uint256", "uint256", "uint256"],
+      [_signer, _chargedZkp, _nonce, +_ruleId, _sessionId]
     );
 
     messageHash = eddsa.poseidon([
@@ -148,21 +170,40 @@ export const validBabyJubJubPanther = async (payload: ValidEcdsa) => {
       _timestamp,
       _sender,
       _receiver,
-      _nestedHash,
+      nestedHash,
     ]);
   } else {
-    [_pkgType, _sender, _receiver, _token, _amount, _nestedHash] =
-      abiCoder.decode(
-        [
-          "uint8", // packageType - number
-          "address", // sender - string
-          "address", // receiver - string
-          "address", // token - string
-          "uint256", // amount - BigNumber
-          "bytes", // nestedHash - string
-        ],
-        purefiPackage
-      );
+    [
+      _pkgType,
+      _ruleId,
+      _sessionId,
+      _sender,
+      _receiver,
+      _token,
+      _amount,
+      _signer,
+      _nonce,
+      _chargedZkp,
+    ] = abiCoder.decode(
+      [
+        "uint8", // packageType - number
+        "uint256", // ruleId - BigNumber
+        "uint256", // sessionId - BigNumber
+        "address", // sender - string
+        "address", // receiver - string
+        "address", // token - string
+        "uint256", // amount - BigNumber
+        "address", // signer - string
+        "uint256", // nonce - BigNumber
+        "uint256", // chargedZkp  - BigNumber
+      ],
+      purefiPackage
+    );
+
+    const nestedHash = abiCoder.encode(
+      ["address", "uint256", "uint256", "uint256", "uint256"],
+      [_signer, _chargedZkp, _nonce, _ruleId, _sessionId]
+    );
 
     messageHash = eddsa.poseidon([
       _pkgType,
@@ -171,7 +212,7 @@ export const validBabyJubJubPanther = async (payload: ValidEcdsa) => {
       _receiver,
       _token,
       _amount,
-      _nestedHash,
+      nestedHash,
     ]);
   }
 
