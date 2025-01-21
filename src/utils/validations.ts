@@ -160,10 +160,13 @@ export const validBabyJubJubPanther = async (payload: ValidEcdsa) => {
       purefiPackage
     );
 
-    const nestedHash = abiCoder.encode(
-      ["address", "uint256", "uint256", "uint256", "uint256"],
-      [_signer, _chargedZkp, _nonce, +_ruleId, _sessionId]
-    );
+    const nestedHash = eddsa.poseidon([
+      _signer,
+      _chargedZkp,
+      _nonce,
+      _sessionId,
+      _ruleId,
+    ]);
 
     messageHash = eddsa.poseidon([
       _pkgType,
@@ -200,10 +203,13 @@ export const validBabyJubJubPanther = async (payload: ValidEcdsa) => {
       purefiPackage
     );
 
-    const nestedHash = abiCoder.encode(
-      ["address", "uint256", "uint256", "uint256", "uint256"],
-      [_signer, _chargedZkp, _nonce, _ruleId, _sessionId]
-    );
+    const nestedHash = eddsa.poseidon([
+      _signer,
+      _chargedZkp,
+      _nonce,
+      _sessionId,
+      _ruleId,
+    ]);
 
     messageHash = eddsa.poseidon([
       _pkgType,
