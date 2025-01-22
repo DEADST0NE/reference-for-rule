@@ -165,7 +165,7 @@ export const validBabyJubJubPanther = async (payload: ValidEcdsa) => {
       _signer,
       _chargedZkp,
       _nonce,
-      toBeHex(_sessionId).slice(0, 64),
+      BigInt(toBeHex(_sessionId).slice(0, 64)),
       _ruleId,
     ]);
 
