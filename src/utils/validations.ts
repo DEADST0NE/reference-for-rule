@@ -208,7 +208,15 @@ export const validBabyJubJubPanther = async (payload: ValidEcdsa) => {
       _signer,
       _chargedZkp,
       _nonce,
-      toBeHex(_sessionId).slice(0, 64),
+      BigInt(toBeHex(_sessionId).slice(0, 64)),
+      _ruleId,
+    ]);
+
+    console.log(333, [
+      _signer,
+      _chargedZkp,
+      _nonce,
+      BigInt(toBeHex(_sessionId).slice(0, 64)),
       _ruleId,
     ]);
 
