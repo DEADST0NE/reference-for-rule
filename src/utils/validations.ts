@@ -3,6 +3,7 @@ import {
   getBytes,
   solidityPackedKeccak256,
   solidityPacked,
+  toBeHex,
 } from "ethers";
 import { recover } from "eth-crypto";
 import { buildEddsa } from "circomlibjs";
@@ -164,7 +165,7 @@ export const validBabyJubJubPanther = async (payload: ValidEcdsa) => {
       _signer,
       _chargedZkp,
       _nonce,
-      _sessionId,
+      toBeHex(_sessionId).slice(0, 64),
       _ruleId,
     ]);
 
@@ -207,7 +208,7 @@ export const validBabyJubJubPanther = async (payload: ValidEcdsa) => {
       _signer,
       _chargedZkp,
       _nonce,
-      _sessionId,
+      toBeHex(_sessionId).slice(0, 64),
       _ruleId,
     ]);
 
