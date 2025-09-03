@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "start": "ts-node src/index.ts"
+    "start": "ts-node src/index.ts",
+    "generate-public": "ts-node src/generate-public-key.ts"
   },
   "dependencies": {
     "axios": "^1.7.1",

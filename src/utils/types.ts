@@ -87,6 +87,6 @@ export const RulesType1 = [
   "93",
   "820050",
 ];
-export const RulesType2 = ["631", "94", "95", "96"];
+export const RulesType2 = ["631", "94", "95", "96", "97", "98", "99"];
 
 export const Chains = [1, 56, 137, 80002, 97, 11155111, 10243, 11155420];

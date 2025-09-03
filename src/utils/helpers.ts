@@ -225,7 +225,7 @@ const bufferToBigInt = (buf: Buffer) => {
   return BigInt(`0x${hex}`);
 };
 
-const uint8ArrayToBigInt = (uint8Array: Uint8Array) =>
+export const uint8ArrayToBigInt = (uint8Array: Uint8Array) =>
   bufferToBigInt(Buffer.from(uint8Array));
 
 export const extractBigInt = (
