@@ -138,6 +138,7 @@ export const validBabyJubJubPanther = async (payload: ValidEcdsa) => {
   let messageHash: Uint8Array;
 
   if (payload.packageType === 1) {
+
     [
       _pkgType,
       _ruleId,

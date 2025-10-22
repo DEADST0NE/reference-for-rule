@@ -31,7 +31,7 @@ export const sendRule = async (payload: SendRule) => {
   const instance = axios.create({
     baseURL,
   });
-
+  
   try {
     const res = await instance.post<string>("/v4/rule", {
       message,
